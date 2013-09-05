@@ -32,11 +32,12 @@ You can access the PredictionIO admin panel through the host machine browser htt
 
 You can import data to the PredictionIO from your host machine through the API server http://localhost:8000 
 
-In the default Vagrantfile setup, the ports 8000, 9000, 50030 and 50070 are forwarded from VM to the host machine.
-Port 8000 - PredictionIO API server
-Port 9000 - PredictionIO web admin server
-Port 50030 - Hadoop Job tracker
-Port 50070 - Hadoop Namenode
+In the default Vagrantfile setup, the ports 8000, 9000, 50030 and 50070 are forwarded from VM to the host machine:
+
+* Port 8000 - PredictionIO API server
+* Port 9000 - PredictionIO web admin server
+* Port 50030 - Hadoop Job tracker
+* Port 50070 - Hadoop Namenode
 
 You can also ssh to the VM by running
 
