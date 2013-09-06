@@ -28,16 +28,18 @@ Now you have a VM with PredictionIO running!
 Accessing PredictionIO VM from the Host Machine
 ------------------------------------------------
 
-You can access the PredictionIO admin panel through the host machine browser http://localhost:9000.
-
-You can import data to the PredictionIO from your host machine through the API server http://localhost:8000 
-
 In the default Vagrantfile setup, the ports 8000, 9000, 50030 and 50070 are forwarded from VM to the host machine:
 
 * Port 8000 - PredictionIO API server
 * Port 9000 - PredictionIO web admin server
 * Port 50030 - Hadoop Job tracker
 * Port 50070 - Hadoop Namenode
+
+You can access the PredictionIO admin panel with the host machine browser http://localhost:9000.
+
+You can import data to the PredictionIO from your host machine through the API server http://localhost:8000 using PredictionIO SDK.
+
+You can browse the HDFS filesystem at http://localhost:50070 with the host machine browser.
 
 You can also ssh to the VM by running
 
@@ -61,3 +63,13 @@ You can completely remove the VM and delete all data with
 	$ vagrant destroy
 
 See http://docs.vagrantup.com/v2/getting-started/teardown.html for more details.
+
+
+SUPPORT
+===========
+
+Forum
+-----
+
+https://groups.google.com/group/predictionio-user
+
