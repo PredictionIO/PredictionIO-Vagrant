@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-PIO_PROVISION = "pio-0.6.1-vagrant.sh"
+PIO_PROVISION = "pio-0.6.2-vagrant.sh"
 PIO_PROVISION_ARGS = "'vagrant'"
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
