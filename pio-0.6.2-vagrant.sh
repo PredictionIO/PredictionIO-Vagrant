@@ -12,7 +12,7 @@ INSTALL_DIR=/opt
 TEMP_DIR=/tmp
 PIO_DIR=$INSTALL_DIR/PredictionIO
 VENDORS_DIR=$PIO_DIR/vendors
-HADOOP_DIR=$VENDORS_DIR/hadoop-1.1.2
+HADOOP_DIR=$VENDORS_DIR/hadoop-1.2.1
 MAHOUT_DIR=$VENDORS_DIR/mahout-0.8-snapshot
 SETUP_DIR=/home/$USER/.pio
 
@@ -24,7 +24,7 @@ if [ ! -f $SETUP_DIR/install ]; then
 	echo "Installing required components ..."
 
 	# MongoDB
-	apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 	echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
 
 	apt-get update
@@ -44,23 +44,23 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	wget http://download.prediction.io/PredictionIO-0.5.0.zip
-	unzip PredictionIO-0.5.0.zip
-	rm PredictionIO-0.5.0.zip
-	mv PredictionIO-0.5.0 $PIO_DIR
+	wget http://download.prediction.io/PredictionIO-0.6.2.zip
+	unzip PredictionIO-0.6.2.zip
+	rm PredictionIO-0.6.2.zip
+	mv PredictionIO-0.6.2 $PIO_DIR
 	chown -R $USER:$USER $PIO_DIR
 	
 	# Hadoop
 	mkdir -p $VENDORS_DIR
 	cd $VENDORS_DIR
 
-	wget http://archive.apache.org/dist/hadoop/core/hadoop-1.1.2/hadoop-1.1.2.tar.gz
-	tar zxvf hadoop-1.1.2.tar.gz
-	rm $VENDORS_DIR/hadoop-1.1.2.tar.gz
+	wget http://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1.tar.gz
+	tar zxvf hadoop-1.2.1.tar.gz
+	rm $VENDORS_DIR/hadoop-1.2.1.tar.gz
 	cp $PIO_DIR/conf/hadoop/* $HADOOP_DIR/conf
 	cp /vagrant/hdfs-site.xml $HADOOP_DIR/conf
 	echo 'export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre' >> $HADOOP_DIR/conf/hadoop-env.sh
-	echo 'io.prediction.commons.settings.hadoop.home=/opt/PredictionIO/vendors/hadoop-1.1.2' >> $PIO_DIR/conf/predictionio.conf
+	echo 'io.prediction.commons.settings.hadoop.home=/opt/PredictionIO/vendors/hadoop-1.2.1' >> $PIO_DIR/conf/predictionio.conf
 	mkdir -p $VENDORS_DIR/hadoop/nn
 	mkdir -p $VENDORS_DIR/hadoop/dn
 	
