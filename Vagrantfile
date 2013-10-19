@@ -15,6 +15,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise64"
 
+  # The URL that the configured box can be found at. 
+  # If the box is not installed on the system, it will be retrieved from this URL when vagrant up is run.
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
   # see http://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--cpuexecutioncap", "90", "--memory", "2048"]
