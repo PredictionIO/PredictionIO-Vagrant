@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-PIO_PROVISION = "pio-0.6.2-vagrant.sh"
+PIO_PROVISION = "pio-0.6.3-vagrant.sh"
 PIO_PROVISION_ARGS = "'vagrant'"
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise64"
 
-  # The URL that the configured box can be found at. 
+  # The URL that the configured box can be found at.
   # If the box is not installed on the system, it will be retrieved from this URL when vagrant up is run.
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
@@ -33,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.path = PIO_PROVISION
     s.args = PIO_PROVISION_ARGS
   end
-  
+
   config.vm.network :forwarded_port, guest: 9000, host: 9000
   config.vm.network :forwarded_port, guest: 8000, host: 8000
   config.vm.network :forwarded_port, guest: 50030, host: 50030
