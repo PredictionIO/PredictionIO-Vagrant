@@ -44,12 +44,12 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	wget http://download.prediction.io/PredictionIO-0.6.2.zip
-	unzip PredictionIO-0.6.2.zip
-	rm PredictionIO-0.6.2.zip
-	mv PredictionIO-0.6.2 $PIO_DIR
+	wget http://download.prediction.io/PredictionIO-0.6.3.zip
+	unzip PredictionIO-0.6.3.zip
+	rm PredictionIO-0.6.3.zip
+	mv PredictionIO-0.6.3 $PIO_DIR
 	chown -R $USER:$USER $PIO_DIR
-	
+
 	# Hadoop
 	mkdir -p $VENDORS_DIR
 	cd $VENDORS_DIR
@@ -63,9 +63,9 @@ if [ ! -f $SETUP_DIR/download ]; then
 	echo 'io.prediction.commons.settings.hadoop.home=/opt/PredictionIO/vendors/hadoop-1.2.1' >> $PIO_DIR/conf/predictionio.conf
 	mkdir -p $VENDORS_DIR/hadoop/nn
 	mkdir -p $VENDORS_DIR/hadoop/dn
-	
+
 	chown -R $USER:$USER $VENDORS_DIR
-	
+
 	# mahout
 	mkdir $MAHOUT_DIR
 	cd $MAHOUT_DIR
@@ -77,7 +77,7 @@ if [ ! -f $SETUP_DIR/download ]; then
 fi
 
 if [ ! -f $SETUP_DIR/keygen ]; then
-	
+
 	# Setup passwordless SSH access for Hadoop on first boot
 	sudo -u $USER mkdir -p /home/$USER/.ssh
 	sudo -u $USER echo "Host localhost" > /home/$USER/.ssh/config
@@ -87,7 +87,7 @@ if [ ! -f $SETUP_DIR/keygen ]; then
 	sudo -u $USER $HADOOP_DIR/bin/hadoop namenode -format -force
 
 	touch $SETUP_DIR/keygen
-	
+
 fi
 
 if [ ! -f $SETUP_DIR/setup ]; then
