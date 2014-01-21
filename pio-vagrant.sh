@@ -117,19 +117,19 @@ if [ ! -f $SETUP_DIR/setup ]; then
 
 fi
 
-if [ -f $PIO_DIR/servers/admin/RUNNING_PID ]; then
+if [ -f $PIO_DIR/admin.pid ]; then
 	echo "Found previous admin PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/servers/admin/RUNNING_PID
+	rm $PIO_DIR/admin.pid
 fi
 
-if [ -f $PIO_DIR/servers/api/RUNNING_PID ]; then
+if [ -f $PIO_DIR/api.pid ]; then
 	echo "Found previous api PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/servers/api/RUNNING_PID
+	rm $PIO_DIR/api.pid
 fi
 
-if [ -f $PIO_DIR/servers/scheduler/RUNNING_PID ]; then
+if [ -f $PIO_DIR/scheduler.pid ]; then
 	echo "Found previous scheduler PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/servers/scheduler/RUNNING_PID
+	rm $PIO_DIR/scheduler.pid
 fi
 
 echo "Start PredictionIO ..."
