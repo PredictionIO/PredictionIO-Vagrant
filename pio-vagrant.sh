@@ -13,7 +13,6 @@ TEMP_DIR=/tmp
 PIO_DIR=$INSTALL_DIR/PredictionIO
 VENDORS_DIR=$PIO_DIR/vendors
 HADOOP_DIR=$VENDORS_DIR/hadoop-1.2.1
-MAHOUT_DIR=$VENDORS_DIR/mahout-0.8-snapshot
 SETUP_DIR=/home/$USER/.pio
 
 mkdir -p $SETUP_DIR
@@ -44,10 +43,10 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	wget http://download.prediction.io/PredictionIO-0.6.8.zip
-	unzip PredictionIO-0.6.8.zip
-	rm PredictionIO-0.6.8.zip
-	mv PredictionIO-0.6.8 $PIO_DIR
+	wget http://download.prediction.io/PredictionIO-0.7.0.zip
+	unzip PredictionIO-0.7.0.zip
+	rm PredictionIO-0.7.0.zip
+	mv PredictionIO-0.7.0 $PIO_DIR
 	chown -R $USER:$USER $PIO_DIR
 
 	# Hadoop
@@ -64,13 +63,11 @@ if [ ! -f $SETUP_DIR/download ]; then
 	mkdir -p $VENDORS_DIR/hadoop/nn
 	mkdir -p $VENDORS_DIR/hadoop/dn
 
-	chown -R $USER:$USER $VENDORS_DIR
+	# GraphChi
+	cd $PIO_DIR
+	yes n | bin/setup-vendors.sh
 
-	# mahout
-	mkdir $MAHOUT_DIR
-	cd $MAHOUT_DIR
-	wget http://download.prediction.io/mahout-snapshots/1993/mahout-core-0.8-SNAPSHOT-job.jar
-	chown -R $USER:$USER $MAHOUT_DIR
+	chown -R $USER:$USER $VENDORS_DIR
 
 	touch $SETUP_DIR/download
 
