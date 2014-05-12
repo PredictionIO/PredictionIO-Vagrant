@@ -43,10 +43,10 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	wget http://download.prediction.io/PredictionIO-0.7.0.zip
-	unzip PredictionIO-0.7.0.zip
-	rm PredictionIO-0.7.0.zip
-	mv PredictionIO-0.7.0 $PIO_DIR
+	wget http://download.prediction.io/PredictionIO-0.7.1.zip
+	unzip PredictionIO-0.7.1.zip
+	rm PredictionIO-0.7.1.zip
+	mv PredictionIO-0.7.1 $PIO_DIR
 	chown -R $USER:$USER $PIO_DIR
 
 	# Hadoop
