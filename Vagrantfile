@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network :forwarded_port, guest: 7070, host: 7070
   config.vm.network :forwarded_port, guest: 7077, host: 7077
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
   config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   # Create a forwarded port mapping which allows access to a specific port
