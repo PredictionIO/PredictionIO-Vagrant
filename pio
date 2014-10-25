@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Wrapper for the pio command in Vagrant
+
+CURRENT_DIR="$(pwd)"
+
+cd $(dirname $0)
+SCRIPT_DIR="$(pwd)"
+
+CHDIR=${CURRENT_DIR/$SCRIPT_DIR/"/vagrant"}
+
+echo "Running command:"
+echo "cd $CHDIR && sudo /opt/PredictionIO/bin/pio $*"
+
+read -p "Do you wish to run this command on the Vagrant machine? [y/N] " yn
+case $yn in
+    [Yy]* )
+        vagrant ssh -c "cd $CHDIR && sudo /opt/PredictionIO/bin/pio $*";;
+    [Nn]* ) exit;;
+    * ) echo "Please answer yes or no.";;
+esac

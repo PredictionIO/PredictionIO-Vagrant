@@ -107,14 +107,10 @@ fi
 
 sudo $ELASTIC_DIR/bin/elasticsearch &
 sudo $HBASE_DIR/bin/start-hbase.sh
-PID=`$PIO_DIR/bin/pio eventserver --ip 0.0.0.0 > /dev/null 2>&1 & echo $!`
-if [ -z "$PID" ]; then
-    echo "Running PredictionIO eventserver with PID #$PID. Run curl -i -X GET http://localhost:7070 to see if it's available."
-else
-    echo "Couldn't launch PredictionIO eventserver automatically, you'll have to start the eventserver manually:"
-    echo "1. Run 'vagrant ssh'"
-    echo "2. In the Vagrant box, run '/opt/PredictionIO/bin/pio eventserver --ip 0.0.0.0 > /dev/null 2>&1 & echo \$!'"
-    echo "3. 'exit' the Vagrant box"
-    echo "4. Check the eventserver status with 'curl -i -X GET http://localhost:7070'"
-    echo "5. Profit!"
-fi
+
+echo "IMPORTANT: You'll have to start the eventserver manually:"
+echo "1. Run './pio eventserver --ip 0.0.0.0'"
+echo "2. 'exit' the Vagrant box"
+echo "3. Check the eventserver status with 'curl -i -X GET http://localhost:7070'"
+echo "4. Use ./pio {train/deploy/...} commands"
+echo "5. Profit!"
