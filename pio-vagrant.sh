@@ -110,7 +110,6 @@ sudo $HBASE_DIR/bin/start-hbase.sh
 
 echo "IMPORTANT: You'll have to start the eventserver manually:"
 echo "1. Run './pio eventserver --ip 0.0.0.0'"
-echo "2. 'exit' the Vagrant box"
-echo "3. Check the eventserver status with 'curl -i -X GET http://localhost:7070'"
-echo "4. Use ./pio {train/deploy/...} commands"
-echo "5. Profit!"
+echo "2. Check the eventserver status with 'curl -i -X GET http://localhost:7070'"
+echo "3. Use ./pio {train/deploy/...} commands"
+echo "4. Profit!"
