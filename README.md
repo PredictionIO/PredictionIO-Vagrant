@@ -17,9 +17,10 @@ Installation
 3. ```vagrant up```
 4. Follow the in-console instructions
 
-PredictionIO runs on port 7070
+- PredictionIO runs on port 7070
+- Instances run on port 8000
 
-Instances run on port 8000
+Optional: Switch to branch `8.1-SNAPSHOT` to use the most recent snapshot version of PredictionIO 0.8.1 directly from github instead of the stable 0.8.0 version.
 
 Support
 =======
