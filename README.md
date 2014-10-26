@@ -18,6 +18,7 @@ Installation
 4. Follow the in-console instructions
 
 PredictionIO runs on port 7070
+
 Instances run on port 8000
 
 Support
