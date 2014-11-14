@@ -1,4 +1,4 @@
-Bring Up PredictionIO 0.8.0 VM with Vagrant
+Bring Up PredictionIO 0.8.1 VM with Vagrant
 ===========================================
 
 Vagrant is an open source tool for simplifying the download and setup steps of
@@ -12,15 +12,13 @@ for detailed usage and setup.
 
 Installation
 ============
-1. ```git clone git@github.com:magento-hackathon/PredictionIO-Vagrant.git```
+1. ```git clone git@github.com:PredictionIO/PredictionIO-Vagrant.git```
 2. ```cd PredictionIO-Vagrant```
 3. ```vagrant up```
 4. Follow the in-console instructions
 
-- PredictionIO runs on port 7070
-- Instances run on port 8000
-
-Optional: Switch to branch `8.1-SNAPSHOT` to use the most recent snapshot version of PredictionIO 0.8.1 directly from github instead of the stable 0.8.0 version.
+- PredictionIO event server runs on port 7070
+- Engine instances run on port 8000
 
 Support
 =======

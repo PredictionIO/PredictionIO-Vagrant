@@ -34,6 +34,7 @@ if [ ! -f $SETUP_DIR/install ]; then
 	# Misc. Tools
 	apt-get install unzip -y
 	apt-get install curl -y
+	apt-get install libgfortran3 -y
 
 	sudo apt-get install python-software-properties -y
 	sudo add-apt-repository ppa:ondrej/php5 -y
@@ -51,12 +52,12 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	if [ ! -f PredictionIO-0.8.0.tar.gz ]; then
-		wget http://download.prediction.io/PredictionIO-0.8.0.tar.gz
+	if [ ! -f PredictionIO-0.8.1.tar.gz ]; then
+		wget http://download.prediction.io/PredictionIO-0.8.1.tar.gz
 	fi
-	tar zxvf PredictionIO-0.8.0.tar.gz
+	tar zxvf PredictionIO-0.8.1.tar.gz
 	rm -rf $PIO_DIR
-	mv PredictionIO-0.8.0 $PIO_DIR
+	mv PredictionIO-0.8.1 $PIO_DIR
 	mkdir $VENDORS_DIR
 	chown -R $USER:$USER $PIO_DIR
 
@@ -78,8 +79,9 @@ if [ ! -f $SETUP_DIR/download ]; then
 	mv elasticsearch-1.3.2 $ELASTIC_DIR
 	echo 'network.host: 127.0.0.1' >> $ELASTIC_DIR/config/elasticsearch.yml
 
+	# HBase
 	if [ ! -f hbase-0.98.6-hadoop2-bin.tar.gz ]; then
-		wget http://archive.apache.org/dist/hbase/hbase-0.98.6/hbase-0.98.6-hadoop2-bin.tar.gz	
+		wget http://archive.apache.org/dist/hbase/hbase-0.98.6/hbase-0.98.6-hadoop2-bin.tar.gz
 	fi
 	tar zxvf hbase-0.98.6-hadoop2-bin.tar.gz
 	rm -rf $HBASE_DIR
