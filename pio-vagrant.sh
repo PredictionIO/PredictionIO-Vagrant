@@ -12,7 +12,9 @@ INSTALL_DIR=/opt
 TEMP_DIR=/tmp
 PIO_DIR=$INSTALL_DIR/PredictionIO
 VENDORS_DIR=$PIO_DIR/vendors
-HADOOP_DIR=$VENDORS_DIR/hadoop-1.2.1
+SPARK_DIR=$VENDORS_DIR/spark-1.1.0
+ELASTIC_DIR=$VENDORS_DIR/elasticsearch-1.3.2
+HBASE_DIR=$VENDORS_DIR/hbase-0.98.6
 SETUP_DIR=/home/$USER/.pio
 
 mkdir -p $SETUP_DIR
@@ -32,6 +34,13 @@ if [ ! -f $SETUP_DIR/install ]; then
 	# Misc. Tools
 	apt-get install unzip -y
 	apt-get install curl -y
+	apt-get install libgfortran3 -y
+
+	sudo apt-get install python-software-properties -y
+	sudo add-apt-repository ppa:ondrej/php5 -y
+	sudo apt-get update
+
+	sudo apt-get install php5 php5-curl -y
 
 	# Java
 	apt-get install openjdk-7-jre -y
@@ -43,29 +52,54 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	wget http://download.prediction.io/PredictionIO-0.7.3.zip
-	unzip PredictionIO-0.7.3.zip
-	rm PredictionIO-0.7.3.zip
-	mv PredictionIO-0.7.3 $PIO_DIR
+	if [ ! -f PredictionIO-0.8.1.tar.gz ]; then
+		wget http://download.prediction.io/PredictionIO-0.8.1.tar.gz
+	fi
+	tar zxvf PredictionIO-0.8.1.tar.gz
+	rm -rf $PIO_DIR
+	mv PredictionIO-0.8.1 $PIO_DIR
+	mkdir $VENDORS_DIR
 	chown -R $USER:$USER $PIO_DIR
 
-	# Hadoop
-	mkdir -p $VENDORS_DIR
-	cd $VENDORS_DIR
+	# Spark
+	if [ ! -f spark-1.1.0-bin-hadoop2.4.tgz ]; then
+                wget http://d3kbcqa49mib13.cloudfront.net/spark-1.1.0-bin-hadoop2.4.tgz
+        fi
+        tar xvf spark-1.1.0-bin-hadoop2.4.tgz
+        rm -rf $SPARK_DIR
+        mv spark-1.1.0-bin-hadoop2.4 $SPARK_DIR
+	sed -i 's/SPARK_HOME=\/path_to_apache_spark/SPARK_HOME=\/opt\/PredictionIO\/vendors\/spark-1.1.0/g' $PIO_DIR/conf/pio-env.sh
 
-	wget http://archive.apache.org/dist/hadoop/core/hadoop-1.2.1/hadoop-1.2.1.tar.gz
-	tar zxvf hadoop-1.2.1.tar.gz
-	rm $VENDORS_DIR/hadoop-1.2.1.tar.gz
-	cp $PIO_DIR/conf/hadoop/* $HADOOP_DIR/conf
-	cp /vagrant/hdfs-site.xml $HADOOP_DIR/conf
-	echo 'export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre' >> $HADOOP_DIR/conf/hadoop-env.sh
-	echo 'io.prediction.commons.settings.hadoop.home=/opt/PredictionIO/vendors/hadoop-1.2.1' >> $PIO_DIR/conf/predictionio.conf
-	mkdir -p $VENDORS_DIR/hadoop/nn
-	mkdir -p $VENDORS_DIR/hadoop/dn
+	# Elasticsearch
+	if [ ! -f elasticsearch-1.3.2.tar.gz ]; then
+		wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz
+	fi
+	tar zxvf elasticsearch-1.3.2.tar.gz
+	rm -rf $ELASTIC_DIR
+	mv elasticsearch-1.3.2 $ELASTIC_DIR
+	echo 'network.host: 127.0.0.1' >> $ELASTIC_DIR/config/elasticsearch.yml
 
-	# GraphChi
-	cd $PIO_DIR
-	yes n | bin/setup-vendors.sh
+	# HBase
+	if [ ! -f hbase-0.98.6-hadoop2-bin.tar.gz ]; then
+		wget http://archive.apache.org/dist/hbase/hbase-0.98.6/hbase-0.98.6-hadoop2-bin.tar.gz
+	fi
+	tar zxvf hbase-0.98.6-hadoop2-bin.tar.gz
+	rm -rf $HBASE_DIR
+	mv hbase-0.98.6-hadoop2 $HBASE_DIR
+
+	cat <<EOT > $HBASE_DIR/conf/hbase-site.xml
+<configuration>
+  <property>
+    <name>hbase.rootdir</name>
+    <value>file:///home/vagrant/hbase</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/home/vagrant/zookeeper</value>
+  </property>
+</configuration>
+EOT
+	echo 'export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' >> $HBASE_DIR/conf/hbase-env.sh
 
 	chown -R $USER:$USER $VENDORS_DIR
 
@@ -73,62 +107,11 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 fi
 
-if [ ! -f $SETUP_DIR/keygen ]; then
+sudo $ELASTIC_DIR/bin/elasticsearch &
+sudo $HBASE_DIR/bin/start-hbase.sh
 
-	# Setup passwordless SSH access for Hadoop on first boot
-	sudo -u $USER mkdir -p /home/$USER/.ssh
-	sudo -u $USER echo "Host localhost" > /home/$USER/.ssh/config
-	sudo -u $USER echo "    StrictHostKeyChecking no" >> /home/$USER/.ssh/config
-	sudo -u $USER ssh-keygen -t dsa -P '' -f /home/$USER/.ssh/id_dsa
-	sudo -u $USER cat /home/$USER/.ssh/id_dsa.pub >> /home/$USER/.ssh/authorized_keys
-	sudo -u $USER $HADOOP_DIR/bin/hadoop namenode -format -force
-
-	touch $SETUP_DIR/keygen
-
-fi
-
-if [ ! -f $SETUP_DIR/setup ]; then
-
-	# Wait for MongoDB ready
-	MONGO_WAIT=10
-	MONGO_RETRY=20
-	MONGO_TRY=1
-	echo -e "Waiting for MongoDB... \c"
-	while [ $MONGO_TRY -le $MONGO_RETRY ] ; do
-		$PIO_DIR/bin/conncheck > /dev/null 2>&1
-		if [ $? -eq 0 ] ; then
-			echo "ready"
-			MONGO_TRY=$MONGO_RETRY
-		elif [ $MONGO_TRY -eq $MONGO_RETRY ] ; then
-			echo "failed (Cannot connect to MongoDB)"
-		exit 1
-		fi
-		sleep $MONGO_WAIT
-		MONGO_TRY=$((MONGO_TRY+1))
-	done
-
-	# setup PIO
-	sudo -u $USER $PIO_DIR/bin/setup.sh
-
-	touch $SETUP_DIR/setup
-
-fi
-
-if [ -f $PIO_DIR/admin.pid ]; then
-	echo "Found previous admin PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/admin.pid
-fi
-
-if [ -f $PIO_DIR/api.pid ]; then
-	echo "Found previous api PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/api.pid
-fi
-
-if [ -f $PIO_DIR/scheduler.pid ]; then
-	echo "Found previous scheduler PID (probably due to unclean shutdown). Removing it ..."
-	rm $PIO_DIR/scheduler.pid
-fi
-
-echo "Start PredictionIO ..."
-su -c "yes | $PIO_DIR/bin/start-all.sh" $USER
-echo "Done."
+echo "IMPORTANT: You'll have to start the eventserver manually:"
+echo "1. Run './pio eventserver --ip 0.0.0.0'"
+echo "2. Check the eventserver status with 'curl -i -X GET http://localhost:7070'"
+echo "3. Use ./pio {train/deploy/...} commands"
+echo "4. Profit!"
