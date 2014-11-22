@@ -1,4 +1,4 @@
-Bring Up PredictionIO 0.8.1 VM with Vagrant
+Bring Up PredictionIO 0.8.2 VM with Vagrant
 ===========================================
 
 Vagrant is an open source tool for simplifying the download and setup steps of
@@ -12,13 +12,14 @@ for detailed usage and setup.
 
 Installation
 ============
+
 1. ```git clone git@github.com:PredictionIO/PredictionIO-Vagrant.git```
 2. ```cd PredictionIO-Vagrant```
 3. ```vagrant up```
 4. Follow the in-console instructions
 
-- PredictionIO event server runs on port 7070
-- Engine instances run on port 8000
+- PredictionIO Event Server runs on port 7070
+- Engine Server runs on port 8000
 
 Support
 =======

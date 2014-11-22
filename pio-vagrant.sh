@@ -11,9 +11,10 @@ USER=$1
 INSTALL_DIR=/opt
 TEMP_DIR=/tmp
 PIO_DIR=$INSTALL_DIR/PredictionIO
+PIO_VERSION=0.8.2
 VENDORS_DIR=$PIO_DIR/vendors
 SPARK_DIR=$VENDORS_DIR/spark-1.1.0
-ELASTIC_DIR=$VENDORS_DIR/elasticsearch-1.3.2
+ELASTIC_DIR=$VENDORS_DIR/elasticsearch-1.4.0
 HBASE_DIR=$VENDORS_DIR/hbase-0.98.6
 SETUP_DIR=/home/$USER/.pio
 
@@ -24,26 +25,15 @@ if [ ! -f $SETUP_DIR/install ]; then
 
 	echo "Installing required components ..."
 
-	# MongoDB
-	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-	echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list
-
-	apt-get update
-	apt-get install mongodb-10gen -y
-
-	# Misc. Tools
-	apt-get install unzip -y
-	apt-get install curl -y
-	apt-get install libgfortran3 -y
-
-	sudo apt-get install python-software-properties -y
-	sudo add-apt-repository ppa:ondrej/php5 -y
 	sudo apt-get update
 
-	sudo apt-get install php5 php5-curl -y
-
 	# Java
-	apt-get install openjdk-7-jre -y
+	sudo apt-get install openjdk-7-jdk -y
+
+	# Misc. Tools
+	sudo apt-get install unzip -y
+	sudo apt-get install curl -y
+	sudo apt-get install libgfortran3 -y
 
 	touch $SETUP_DIR/install
 fi
@@ -52,12 +42,12 @@ if [ ! -f $SETUP_DIR/download ]; then
 
 	# PredictionIO
 	cd $TEMP_DIR
-	if [ ! -f PredictionIO-0.8.1.tar.gz ]; then
-		wget http://download.prediction.io/PredictionIO-0.8.1.tar.gz
+	if [ ! -f PredictionIO-$PIO_VERSION.tar.gz ]; then
+		wget http://download.prediction.io/PredictionIO-$PIO_VERSION.tar.gz
 	fi
-	tar zxvf PredictionIO-0.8.1.tar.gz
+	tar zxvf PredictionIO-$PIO_VERSION.tar.gz
 	rm -rf $PIO_DIR
-	mv PredictionIO-0.8.1 $PIO_DIR
+	mv PredictionIO-$PIO_VERSION $PIO_DIR
 	mkdir $VENDORS_DIR
 	chown -R $USER:$USER $PIO_DIR
 
@@ -71,12 +61,12 @@ if [ ! -f $SETUP_DIR/download ]; then
 	sed -i 's/SPARK_HOME=\/path_to_apache_spark/SPARK_HOME=\/opt\/PredictionIO\/vendors\/spark-1.1.0/g' $PIO_DIR/conf/pio-env.sh
 
 	# Elasticsearch
-	if [ ! -f elasticsearch-1.3.2.tar.gz ]; then
-		wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz
+	if [ ! -f elasticsearch-1.4.0.tar.gz ]; then
+		wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.tar.gz
 	fi
-	tar zxvf elasticsearch-1.3.2.tar.gz
+	tar zxvf elasticsearch-1.4.0.tar.gz
 	rm -rf $ELASTIC_DIR
-	mv elasticsearch-1.3.2 $ELASTIC_DIR
+	mv elasticsearch-1.4.0 $ELASTIC_DIR
 	echo 'network.host: 127.0.0.1' >> $ELASTIC_DIR/config/elasticsearch.yml
 
 	# HBase
@@ -107,7 +97,7 @@ EOT
 
 fi
 
-sudo $ELASTIC_DIR/bin/elasticsearch &
+sudo $ELASTIC_DIR/bin/elasticsearch -d
 sudo $HBASE_DIR/bin/start-hbase.sh
 
 echo "IMPORTANT: You'll have to start the eventserver manually:"
