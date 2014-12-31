@@ -11,9 +11,9 @@ USER=$1
 INSTALL_DIR=/opt
 TEMP_DIR=/tmp
 PIO_DIR=$INSTALL_DIR/PredictionIO
-PIO_VERSION=0.8.2
+PIO_VERSION=0.8.4
 VENDORS_DIR=$PIO_DIR/vendors
-SPARK_DIR=$VENDORS_DIR/spark-1.1.0
+SPARK_DIR=$VENDORS_DIR/spark-1.2.0
 ELASTIC_DIR=$VENDORS_DIR/elasticsearch-1.4.0
 HBASE_DIR=$VENDORS_DIR/hbase-0.98.6
 SETUP_DIR=/home/$USER/.pio
@@ -52,13 +52,13 @@ if [ ! -f $SETUP_DIR/download ]; then
 	chown -R $USER:$USER $PIO_DIR
 
 	# Spark
-	if [ ! -f spark-1.1.0-bin-hadoop2.4.tgz ]; then
-                wget http://d3kbcqa49mib13.cloudfront.net/spark-1.1.0-bin-hadoop2.4.tgz
+	if [ ! -f spark-1.2.0-bin-hadoop2.4.tgz ]; then
+                wget http://d3kbcqa49mib13.cloudfront.net/spark-1.2.0-bin-hadoop2.4.tgz
         fi
-        tar xvf spark-1.1.0-bin-hadoop2.4.tgz
+        tar xvf spark-1.2.0-bin-hadoop2.4.tgz
         rm -rf $SPARK_DIR
-        mv spark-1.1.0-bin-hadoop2.4 $SPARK_DIR
-	sed -i 's/SPARK_HOME=\/path_to_apache_spark/SPARK_HOME=\/opt\/PredictionIO\/vendors\/spark-1.1.0/g' $PIO_DIR/conf/pio-env.sh
+        mv spark-1.2.0-bin-hadoop2.4 $SPARK_DIR
+	sed -i 's/SPARK_HOME=\/path_to_apache_spark/SPARK_HOME=\/opt\/PredictionIO\/vendors\/spark-1.2.0/g' $PIO_DIR/conf/pio-env.sh
 
 	# Elasticsearch
 	if [ ! -f elasticsearch-1.4.0.tar.gz ]; then
