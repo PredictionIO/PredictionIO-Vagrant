@@ -1,4 +1,4 @@
-Bring Up PredictionIO 0.8.2 VM with Vagrant
+Bring Up PredictionIO 0.8.4 VM with Vagrant
 ===========================================
 
 Vagrant is an open source tool for simplifying the download and setup steps of
