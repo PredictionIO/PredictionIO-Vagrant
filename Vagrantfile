@@ -1,9 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-PIO_PROVISION = "pio-vagrant.sh"
-PIO_PROVISION_ARGS = "-y"
-
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -30,9 +27,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # install PredictionIO
   config.vm.provision "shell", run: "always" do |s|
-    s.path = PIO_PROVISION
-    s.args = PIO_PROVISION_ARGS
-    s.privileged = false
+   s.inline = 'bash -c "$(curl -s https://install.prediction.io/install.sh)" 0 -y'
+   s.privileged = false
   end
 
   config.vm.network :forwarded_port, guest: 7070, host: 7070
