@@ -25,10 +25,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # doesn't already exist on the user's system.
   # config.vm.box_url = "http://domain.com/path/to/above.box"
 
-  # install PredictionIO
+  # PredictionIO provision script
   config.vm.provision "shell", run: "always" do |s|
-   s.inline = 'bash -c "$(curl -s https://install.prediction.io/install.sh)" 0 -y'
-   s.privileged = false
+    s.path = "provision.sh"
+    s.privileged = false
   end
 
   config.vm.network :forwarded_port, guest: 7070, host: 7070
