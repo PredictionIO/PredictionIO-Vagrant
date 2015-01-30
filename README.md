@@ -13,13 +13,7 @@ for detailed usage and setup.
 Installation
 ============
 
-1. ```git clone git@github.com:PredictionIO/PredictionIO-Vagrant.git```
-2. ```cd PredictionIO-Vagrant```
-3. ```vagrant up```
-4. Follow the in-console instructions
-
-- PredictionIO Event Server runs on port 7070
-- Engine Server runs on port 8000
+Please refer to the [Installing PredictionIO with Vagrant (VirtualBox)](http://docs.prediction.io/install/install-vagrant/) for installation instructions.
 
 Support
 =======
