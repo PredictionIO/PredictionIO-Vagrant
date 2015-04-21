@@ -3,18 +3,6 @@
 SETUP_DIR=$HOME/.pio
 INSTALLED_FLAG=$SETUP_DIR/installed
 
-SPARK_VERSION=1.2.1
-ELASTICSEARCH_VERSION=1.4.4
-HBASE_VERSION=0.98.11
-PIO_DIR=$HOME/PredictionIO
-
-pio_dir=$PIO_DIR
-vendors_dir=$pio_dir/vendors
-spark_dir=$vendors_dir/spark-$SPARK_VERSION
-elasticsearch_dir=$vendors_dir/elasticsearch-$ELASTICSEARCH_VERSION
-hbase_dir=$vendors_dir/hbase-$HBASE_VERSION
-zookeeper_dir=$vendors_dir/zookeeper
-
 mkdir -p $SETUP_DIR
 
 if [ ! -f $INSTALLED_FLAG ]; then
@@ -40,14 +28,8 @@ if [ ! -f $INSTALLED_FLAG ]; then
   fi
 
 else
-
   echo "PredictionIO already installed. Skip installation."
-  echo "Starting ElasticSearch...."
-  $elasticsearch_dir/bin/elasticsearch -d
-  echo "Starting HBase..."
-  $hbase_dir/bin/start-hbase.sh
-  echo "Wait for 15 seconds for HBase to be ready..."
-  sleep 15s
+  pio-start-all
   echo "--------------------------------------------------------------------------------"
   echo -e "\033[1;32mPredictionIO VM is up!\033[0m"
   echo "You could run 'pio status' inside VM ('vagrant ssh' to VM first) to confirm if PredictionIO is ready."
